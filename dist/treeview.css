@@ -1,0 +1,48 @@
+div.tree {
+    /* prevent user selection */
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    /* default */
+    text-decoration: none;
+}
+
+div.tree ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border: none;
+    overflow: hidden;
+}
+
+div.tree li {
+    position: relative;
+    padding: 0 0 0 20px;
+    line-height: 20px;
+}
+
+div.tree li .expanded {
+    padding: 1px 10px;
+    background: url("img/folder.png") no-repeat;
+}
+
+div.tree li .collapsed {
+    padding: 1px 10px;
+    background: url("img/folder-closed.png") no-repeat;
+}
+
+div.tree li .normal {
+    padding: 1px 10px;
+    background: url("img/file.png") no-repeat;
+}
+
+div.tree li i, div.tree li span {
+    cursor: pointer;
+}
+
+form.treeform {
+    display: inline-block;
+}
