@@ -6,8 +6,8 @@ div.tree {
     -ms-user-select: none;
     user-select: none;
 
-    /* default */
     text-decoration: none;
+    display: inline;
 }
 
 div.tree ul {
@@ -41,8 +41,4 @@ div.tree li .normal {
 
 div.tree li i, div.tree li span {
     cursor: pointer;
-}
-
-form.treeform {
-    display: inline-block;
 }
