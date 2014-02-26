@@ -3,8 +3,9 @@
 
     var module = angular.module('oci.treeview', []);
 
-    function TreeCtr($scope) {
+    module.controller('oci.treeview.ctrl', function ($scope) {
         $scope.iconClass = function (node) {
+            // todo consider inlining for efficiency
             if (hasChildren(node)) {
                 return node.collapsed ? 'collapsed' : 'expanded';
             } else {
@@ -23,14 +24,14 @@
         var hasChildren = function (node) {
             return node.children !== undefined && node.children.length > 0;
         };
-    }
+    });
 
     module.directive("treeview", function ($compile) {
         return {
             restrict: "E",
             transclude: true,
             scope: {tree: '='},
-            controller: TreeCtr,
+            controller: 'oci.treeview.ctrl',
             template:
                 '<div class="tree">' +
                 '   <span ng-transclude></span>' +

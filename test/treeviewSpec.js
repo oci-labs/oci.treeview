@@ -5,74 +5,168 @@
         beforeEach(module('oci.treeview'));
 
         var compile;
-        var rootScope;
+        var scope;
 
-        beforeEach(inject(function ($compile, $rootScope) {
+        beforeEach(inject(function ($compile, $rootScope, $controller) {
             compile = $compile;
-            rootScope = $rootScope;
+            scope = $rootScope.$new();
+            scope.context = {};
+            $controller('oci.treeview.ctrl', {$scope: scope});
         }));
 
-        it('should render nested tree', function () {
-            var treeFamily = {
-                name : "Parent",
-                children: [{
-                    name : "Child1",
-                    children: [{
-                        name : "Grandchild1",
+        it('should render nested tree uncollapsed', function () {
+            var treeData = {
+                label: "Parent",
+                collapsed: false,
+                children: [
+                    {
+                        label: "Child1",
+                        collapsed: false,
+                        children: [
+                            {
+                                label: "Grandchild1",
+                                collapsed: false,
+                                children: []
+                            }
+                        ]
+                    },
+                    {
+                        label: "Child2",
+                        collapsed: false,
                         children: []
-                    },{
-                        name : "Grandchild2",
-                        children: []
-                    },{
-                        name : "Grandchild3",
-                        children: []
-                    }]
-                }, {
-                    name: "Child2",
-                    children: []
-                }]
+                    }
+                ]
             };
-//            var treeData = [
-//                {
-//                    label: "item one",
-//                    path: "/itemOne/",
-//                    collapsed: true,
-//                    complete: false,
-//                    children: [
-//                        {
-//                            label: "item one child one",
-//                            path: "/itemOne/childOne/",
-//                            collapsed: true,
-//                            complete: false
-//                        }
-//                    ]
-//                },
-//                {
-//                    label: "item two",
-//                    path: "/itemTwo",
-//                    collapsed: true,
-//                    complete: false,
-//                    children: []
-//                }
-//            ];
 
-            var elem = angular.element('<tree family="treeFamily"> <!--HTML to be transcluded--> <p>{{ family.name }}</p> </tree>');
-//            var elem = angular.element('<treeview id="treeId" family="treeData" item="activeItem"><span>YO</span></treeview>');
-            rootScope.treeFamily = treeFamily;
-            compile(elem)(rootScope);
-            rootScope.$digest();
+            var elem = angular.element('<treeview tree="treeData"> <!--HTML to be transcluded--> <p>{{ tree.label }}</p> </treeview>');
+            scope.treeData = treeData;
+            compile(elem)(scope);
+            scope.$digest();
 
-            console.log(elem);
+            var labels = elem.find('div p');
+            expect(labels.length).toBe(4);
+            expect(labels.eq(0).text()).toBe('Parent');
+            expect(labels.eq(1).text()).toBe('Child1');
+            expect(labels.eq(2).text()).toBe('Grandchild1');
+            expect(labels.eq(3).text()).toBe('Child2');
 
-            var labels = elem.find('div>ul>li>span');
-            expect(labels.length).toBe(3);
-            expect(labels.eq(0).text()).toBe('item one');
-            expect(labels.eq(1).text()).toBe('item one child one');
-            expect(labels.eq(2).text()).toBe('item two');
+            var childLabels = elem.find('div ul li div p');
+            expect(childLabels.length).toBe(3);
+            expect(childLabels.eq(0).text()).toBe('Child1');
+            expect(childLabels.eq(1).text()).toBe('Grandchild1');
+            expect(childLabels.eq(2).text()).toBe('Child2');
 
-            var childLabels = elem.find('div>ul>li>div div>ul>li>span');
-            expect(childLabels.length).toBe(1);
-            expect(childLabels.eq(0).text()).toBe('item one child one');
+            var grandchildLabels = elem.find('div ul li div ul li div p');
+            expect(grandchildLabels.length).toBe(1);
+            expect(grandchildLabels.eq(0).text()).toBe('Grandchild1');
         });
+
+        it('should render nested tree with the child collapsed', function () {
+            var treeData = {
+                label: "Parent",
+                collapsed: false,
+                children: [
+                    {
+                        label: "Child1",
+                        collapsed: true,
+                        children: [
+                            {
+                                label: "Grandchild1",
+                                collapsed: false,
+                                children: []
+                            }
+                        ]
+                    },
+                    {
+                        label: "Child2",
+                        collapsed: false,
+                        children: []
+                    }
+                ]
+            };
+
+            var elem = angular.element('<treeview tree="treeData"> <!--HTML to be transcluded--> <p>{{ tree.label }}</p> </treeview>');
+            scope.treeData = treeData;
+            compile(elem)(scope);
+            scope.$digest();
+
+            var labels = elem.find('div p');
+            expect(labels.length).toBe(3);
+            expect(labels.eq(0).text()).toBe('Parent');
+            expect(labels.eq(1).text()).toBe('Child1');
+            expect(labels.eq(2).text()).toBe('Child2');
+
+            var childLabels = elem.find('div ul li div p');
+            expect(childLabels.length).toBe(2);
+            expect(childLabels.eq(0).text()).toBe('Child1');
+            expect(childLabels.eq(1).text()).toBe('Child2');
+
+            var grandchildLabels = elem.find('div ul li div ul li div p');
+            expect(grandchildLabels.length).toBe(0);
+        });
+
+        it('should render nested tree with the root collapsed', function () {
+            var treeData = {
+                label: "Parent",
+                collapsed: true,
+                children: [
+                    {
+                        label: "Child1",
+                        collapsed: true,
+                        children: [
+                            {
+                                label: "Grandchild1",
+                                collapsed: false,
+                                children: []
+                            }
+                        ]
+                    },
+                    {
+                        label: "Child2",
+                        collapsed: false,
+                        children: []
+                    }
+                ]
+            };
+
+            var elem = angular.element('<treeview tree="treeData"> <!--HTML to be transcluded--> <p>{{ tree.label }}</p> </treeview>');
+            scope.treeData = treeData;
+            compile(elem)(scope);
+            scope.$digest();
+
+            var labels = elem.find('div p');
+            expect(labels.length).toBe(1);
+            expect(labels.eq(0).text()).toBe('Parent');
+
+            var childLabels = elem.find('div ul li div p');
+            expect(childLabels.length).toBe(0);
+
+            var grandchildLabels = elem.find('div ul li div ul li div p');
+            expect(grandchildLabels.length).toBe(0);
+        });
+
+        it('should calculate icon class', function () {
+            expect(scope.iconClass({})).toBe('normal');
+            expect(scope.iconClass({children: []})).toBe('normal');
+            expect(scope.iconClass({children: [{}]})).toBe('expanded');
+            expect(scope.iconClass({collapsed: false, children: [{}]})).toBe('expanded');
+            expect(scope.iconClass({collapsed: true, children: [{}]})).toBe('collapsed');
+        });
+
+        it('should have skipped doing anything w/o children', function(){
+            // check childless (should be skipped)
+            var selectedNode = {collapsed: true, children: []};
+            scope.selectNodeHead(selectedNode);
+            expect(selectedNode.collapsed).toBe(true); // unchanged
+        });
+
+        it('should have collapsed', function(){
+            var selectedNode = {collapsed: false, children: [{}]};
+            scope.selectNodeHead(selectedNode);
+            expect(selectedNode.collapsed).toBe(true); // changed
+            scope.selectNodeHead(selectedNode);
+            expect(selectedNode.collapsed).toBe(false); // changed
+        });
+
     });
 })();
