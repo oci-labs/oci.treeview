@@ -1,63 +1,89 @@
 (function () {
     'use strict';
 
-    angular.module('oci.treeview', [])
-        .directive('treeview', function ($compile) {
-            function TreeViewController($scope) {
-                $scope.context = $scope.context || {};
+    var module = angular.module('oci.treeview', []);
 
-                $scope.iconClass = function (node) {
-                    var hasChildren = $scope.hasChildren(node);
-
-                    if (hasChildren) {
-                        return node.collapsed ? 'collapsed' : 'expanded';
-                    } else {
-                        return 'normal';
-                    }
-                };
-
-                $scope.selectNodeHead = function (selectedNode) {
-                    if (!$scope.hasChildren(selectedNode)) {
-                        return;
-                    }
-
-                    selectedNode.collapsed = !selectedNode.collapsed;
-                };
-
-                $scope.hasChildren = function (node) {
-                    return node.children !== undefined && node.children.length > 0;
-                };
-            }
-
-            function link(scope, elem) {
-                var template =
-                    '<div class="tree">' +
-                        '<ul>' +
-                            '<li ng-repeat="node in tree">' +
-                                '<i ng-class="iconClass(node)" ng-click="selectNodeHead(node)"></i>' +
-                                '<span ng-class="node.selected">{{node.label}}</span>' +
-                                '<div ng-if="node.children && node.children.length" ng-hide="node.collapsed">' +
-                                    '<treeview id="id" tree="node.children" item="item" context="context"></treeview>' +
-                                '</div>' +
-                            '</li>' +
-                        '</ul>' +
-                    '</div>';
-
-                $compile(template)(scope, function (clone) {
-                    elem.append(clone);
-                });
-            }
-
-            return {
-                controller: TreeViewController,
-                restrict: 'E',
-                scope: {
-                    id: '@id',
-                    tree: '=',
-                    item: '=',
-                    context: '=?'
+    module.controller("TreeCtrl", function ($scope) {
+        $scope.treeData = {
+            label: "Parent",
+            path: "/Parent/",
+            collapsed: true,
+            children: [
+                {
+                    label: "Child1",
+                    path: "/Parent/Child1/",
+                    collapsed: true,
+                    children: [
+                        {
+                            label: "Grandchild1",
+                            path: "/Parent/Child1/Grandchild1/",
+                            collapsed: true,
+                            children: []
+                        },
+                        {
+                            label: "Grandchild2",
+                            path: "/Parent/Child1/Grandchild2/",
+                            collapsed: true,
+                            children: []
+                        },
+                        {
+                            label: "Grandchild3",
+                            path: "/Parent/Child1/Grandchild3/",
+                            collapsed: true,
+                            children: []
+                        }
+                    ]
                 },
-                link: link
-            };
-        });
+                {
+                    label: "Child2",
+                    path: "/Parent/Child2/",
+                    collapsed: true,
+                    children: []
+                }
+            ]
+        };
+    });
+
+    module.directive("treeview", function ($compile) {
+        return {
+            restrict: "E",
+            transclude: true,
+            scope: {tree: '='},
+            template:
+//                '<div class="tree">' +
+//                '   <ul>' +
+//                '       <li ng-repeat="node in tree">' +
+//                '           <i ng-class="iconClass(node)" ng-click="selectNodeHead(node)"></i>' +
+//                '           <span ng-class="node.selected">{{node.label}}</span>' +
+//                '           <div ng-if="node.children && node.children.length" ng-hide="node.collapsed">' +
+//                '               <treeview id="id" tree="node.children" item="item" context="context"></treeview>' +
+//                '           </div>' +
+//                '       </li>' +
+//                '   </ul>' +
+//                '</div>';
+                '<div class="tree">' +
+                '   <span ng-transclude></span>' +
+                '   <ul ng-if="tree.children && tree.children.length > 0">' +
+                '       <li ng-repeat="node in tree.children">' +
+                '           <treeview tree="node">' +
+                '               <div ng-transclude></div>' +
+                '           </treeview>' +
+                '     </li>' +
+                '   </ul>' +
+                '</div>',
+            compile: function (tElement, tAttr, transclude) {
+                var contents = tElement.contents().remove();
+                var compiledContents;
+                return function (scope, iElement, iAttr) {
+
+                    if (!compiledContents) {
+                        compiledContents = $compile(contents, transclude);
+                    }
+                    compiledContents(scope, function (clone, scope) {
+                        iElement.append(clone);
+                    });
+                };
+            }
+        };
+    });
 })();
