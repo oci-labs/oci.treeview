@@ -6,12 +6,18 @@
 
         var compile;
         var scope;
+        var timeout;
+        var rootScope;
+        var q;
 
-        beforeEach(inject(function ($compile, $rootScope, $controller) {
+        beforeEach(inject(function ($compile, $rootScope, $controller, $timeout, $q) {
             compile = $compile;
             scope = $rootScope.$new();
             scope.context = {};
             $controller('oci.treeview.ctrl', {$scope: scope});
+            timeout = $timeout;
+            rootScope = $rootScope;
+            q = $q;
         }));
 
         it('should render nested tree expanded', function () {
@@ -160,5 +166,85 @@
             expect(selectedNode.state).toBe('expanded'); // changed
         });
 
+        it('should call on-select-node function before changing state', function () {
+            var onSelectNodeState;
+            scope.onSelectNode = function (node) {
+                onSelectNodeState = node.state;
+            }
+
+            var selectedNode = {state: 'expanded', children: [{}]};
+
+            scope.selectNode(selectedNode);
+            expect(onSelectNodeState).toBe('expanded'); // not changed yet
+            expect(selectedNode.state).toBe('collapsed'); // changed
+
+            scope.selectNode(selectedNode);
+            expect(onSelectNodeState).toBe('collapsed'); // not changed yet
+            expect(selectedNode.state).toBe('expanded'); // changed
+        });
+
+        it('should resolve on-select-node promise before changing state', function () {
+            var onSelectNodeState;
+            var promiseCalled = false;
+
+            scope.onSelectNode = function (node) {
+                var deferred = q.defer();
+                var promise = deferred.promise;
+                promise.then(function () {
+                    promiseCalled = true;
+                    onSelectNodeState = node.state;
+                });
+                deferred.resolve();
+                return promise;
+            }
+
+            var selectedNode = {state: 'expanded', children: [{}]};
+
+            scope.selectNode(selectedNode);
+            expect(promiseCalled).toBe(false);
+            expect(onSelectNodeState).toBeUndefined(); // not changed yet
+            expect(selectedNode.state).toBe('expanded'); // not changed yet
+
+            rootScope.$apply(); // trigger promise resolution
+
+            expect(promiseCalled).toBe(true);
+            expect(onSelectNodeState).toBe('collapsed'); // changed
+            expect(selectedNode.state).toBe('collapsed'); // changed
+        });
+
+        iit('should not change state if on-select-node promise resolves to error', function () {
+            var onSelectNodeState;
+            var promiseCalled = false;
+            var promiseError;
+
+            scope.onSelectNode = function (node) {
+                var deferred = q.defer();
+                var promise = deferred.promise;
+                promise.then(function () {
+                    // should not get here:
+                    promiseCalled = true;
+                    onSelectNodeState = node.state;
+                }, function () {
+                    promiseCalled = true;
+                    promiseError = true;
+                });
+                deferred.reject('error');
+                return promise;
+            }
+
+            var selectedNode = {state: 'expanded', children: [{}]};
+
+            scope.selectNode(selectedNode);
+            expect(promiseCalled).toBe(false);
+            expect(onSelectNodeState).toBeUndefined(); // not changed yet
+            expect(selectedNode.state).toBe('expanded'); // not changed yet
+
+            rootScope.$apply(); // trigger promise resolution
+
+            expect(promiseCalled).toBe(true);
+            expect(promiseError).toBe(true);
+            expect(onSelectNodeState).toBeUndefined(); // still not changed
+            expect(selectedNode.state).toBe('expanded'); // still not changed
+        });
     });
 })();

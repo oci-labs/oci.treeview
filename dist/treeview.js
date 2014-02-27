@@ -28,10 +28,8 @@
             }
 
             var promise = $scope.onSelectNode && $scope.onSelectNode(node);
-            if (promise && promise.success) {
-                promise.success(function () {
-                    setState();
-                });
+            if (promise && promise.then) {
+                promise.then(setState);
             } else {
                 setState();
             }
