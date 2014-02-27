@@ -34,7 +34,7 @@ div.tree li .collapsed {
     background: url("img/folder-closed.png") no-repeat;
 }
 
-div.tree li .normal {
+div.tree li .leaf {
     padding: 1px 10px;
     background: url("img/file.png") no-repeat;
 }

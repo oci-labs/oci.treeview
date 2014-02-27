@@ -14,25 +14,25 @@
             $controller('oci.treeview.ctrl', {$scope: scope});
         }));
 
-        it('should render nested tree uncollapsed', function () {
+        it('should render nested tree expanded', function () {
             var treeData = {
-                label: "Parent",
-                collapsed: false,
+                label: 'Parent',
+                state: 'expanded',
                 children: [
                     {
-                        label: "Child1",
-                        collapsed: false,
+                        label: 'Child1',
+                        state: 'expanded',
                         children: [
                             {
-                                label: "Grandchild1",
-                                collapsed: false,
+                                label: 'Grandchild1',
+                                state: 'expanded',
                                 children: []
                             }
                         ]
                     },
                     {
-                        label: "Child2",
-                        collapsed: false,
+                        label: 'Child2',
+                        state: 'expanded',
                         children: []
                     }
                 ]
@@ -63,23 +63,23 @@
 
         it('should render nested tree with the child collapsed', function () {
             var treeData = {
-                label: "Parent",
-                collapsed: false,
+                label: 'Parent',
+                state: 'expanded',
                 children: [
                     {
-                        label: "Child1",
-                        collapsed: true,
+                        label: 'Child1',
+                        state: 'collapsed',
                         children: [
                             {
-                                label: "Grandchild1",
-                                collapsed: false,
+                                label: 'Grandchild1',
+                                state: 'expanded',
                                 children: []
                             }
                         ]
                     },
                     {
-                        label: "Child2",
-                        collapsed: false,
+                        label: 'Child2',
+                        state: 'expanded',
                         children: []
                     }
                 ]
@@ -107,23 +107,23 @@
 
         it('should render nested tree with the root collapsed', function () {
             var treeData = {
-                label: "Parent",
-                collapsed: true,
+                label: 'Parent',
+                state: 'collapsed',
                 children: [
                     {
-                        label: "Child1",
-                        collapsed: true,
+                        label: 'Child1',
+                        state: 'collapsed',
                         children: [
                             {
-                                label: "Grandchild1",
-                                collapsed: false,
+                                label: 'Grandchild1',
+                                state: 'leaf',
                                 children: []
                             }
                         ]
                     },
                     {
-                        label: "Child2",
-                        collapsed: false,
+                        label: 'Child2',
+                        state: 'leaf',
                         children: []
                     }
                 ]
@@ -145,27 +145,19 @@
             expect(grandchildLabels.length).toBe(0);
         });
 
-        it('should calculate icon class', function () {
-            expect(scope.iconClass({})).toBe('normal');
-            expect(scope.iconClass({children: []})).toBe('normal');
-            expect(scope.iconClass({children: [{}]})).toBe('expanded');
-            expect(scope.iconClass({collapsed: false, children: [{}]})).toBe('expanded');
-            expect(scope.iconClass({collapsed: true, children: [{}]})).toBe('collapsed');
-        });
-
         it('should have skipped doing anything w/o children', function(){
             // check childless (should be skipped)
-            var selectedNode = {collapsed: true, children: []};
+            var selectedNode = {state: 'leaf', children: []};
             scope.selectNodeHead(selectedNode);
-            expect(selectedNode.collapsed).toBe(true); // unchanged
+            expect(selectedNode.state).toBe('leaf'); // unchanged
         });
 
         it('should have collapsed', function(){
-            var selectedNode = {collapsed: false, children: [{}]};
+            var selectedNode = {state: 'expanded', children: [{}]};
             scope.selectNodeHead(selectedNode);
-            expect(selectedNode.collapsed).toBe(true); // changed
+            expect(selectedNode.state).toBe('collapsed'); // changed
             scope.selectNodeHead(selectedNode);
-            expect(selectedNode.collapsed).toBe(false); // changed
+            expect(selectedNode.state).toBe('expanded'); // changed
         });
 
     });

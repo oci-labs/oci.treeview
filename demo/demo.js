@@ -1,29 +1,29 @@
-angular.module('app', ['oci.treeview']).controller("AppCtrl", function ($scope) {
+angular.module('app', ['oci.treeview']).controller('AppCtrl', function ($scope) {
     $scope.treeData = {
-        label: "Parent",
-        collapsed: false,
+        label: 'Parent',
+        state: 'expanded',
         children: [
             {
-                label: "Child1",
-                collapsed: false,
+                label: 'Child1',
+                state: 'expanded',
                 children: [
                     {
-                        label: "Grandchild1",
-                        collapsed: false,
+                        label: 'Grandchild1',
+                        state: 'leaf',
                         children: []
                     },
                     {
-                        label: "Grandchild2",
-                        collapsed: false,
+                        label: 'Grandchild2',
+                        state: 'leaf',
                         children: []
                     },
                     {
-                        label: "Grandchild3",
-                        collapsed: false,
+                        label: 'Grandchild3',
+                        state: 'expanded',
                         children: [
                             {
-                                label: "Greatgrandchild1",
-                                collapsed: false,
+                                label: 'Greatgrandchild1',
+                                state: 'leaf',
                                 children: []
                             }
                         ]
@@ -31,8 +31,8 @@ angular.module('app', ['oci.treeview']).controller("AppCtrl", function ($scope) 
                 ]
             },
             {
-                label: "Child2",
-                collapsed: false,
+                label: 'Child2',
+                state: 'leaf',
                 children: []
             }
         ]

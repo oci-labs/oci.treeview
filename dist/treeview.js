@@ -4,25 +4,12 @@
     var module = angular.module('oci.treeview', []);
 
     module.controller('oci.treeview.ctrl', function ($scope) {
-        $scope.iconClass = function (node) {
-            // todo consider inlining for efficiency
-            if (hasChildren(node)) {
-                return node.collapsed ? 'collapsed' : 'expanded';
-            } else {
-                return 'normal';
-            }
-        };
-
         $scope.selectNodeHead = function (selectedNode) {
-            if (!hasChildren(selectedNode)) {
-                return;
+            if (selectedNode.state === 'expanded') {
+                selectedNode.state = 'collapsed';
+            } else if (selectedNode.state === 'collapsed') {
+                selectedNode.state = 'expanded';
             }
-
-            selectedNode.collapsed = !selectedNode.collapsed;
-        };
-
-        var hasChildren = function (node) {
-            return node.children !== undefined && node.children.length > 0;
         };
     });
 
@@ -40,9 +27,9 @@
                 // Here we have one of the ng-transclude directives that will be given the HTML in the
                 // element the directive is applied to.
                 '   <span ng-transclude></span>' +
-                '   <ul ng-if="tree.children && tree.children.length > 0 && !tree.collapsed">' +
+                '   <ul ng-if="tree.state === ' + "'expanded'" + '">' +
                 '       <li ng-repeat="node in tree.children">' +
-                '           <i ng-class="iconClass(node)" ng-click="selectNodeHead(node)"></i>' +
+                '           <i ng-class="node.state" ng-click="selectNodeHead(node)"></i>' +
                 '           <treeview tree="node">' +
                 // Here is another ng-transclude directive which will be given the same transclude HTML as
                 // above instance.
