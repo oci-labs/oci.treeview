@@ -148,15 +148,15 @@
         it('should have skipped doing anything w/o children', function(){
             // check childless (should be skipped)
             var selectedNode = {state: 'leaf', children: []};
-            scope.selectNodeHead(selectedNode);
+            scope.selectNode(selectedNode);
             expect(selectedNode.state).toBe('leaf'); // unchanged
         });
 
         it('should have collapsed', function(){
             var selectedNode = {state: 'expanded', children: [{}]};
-            scope.selectNodeHead(selectedNode);
+            scope.selectNode(selectedNode);
             expect(selectedNode.state).toBe('collapsed'); // changed
-            scope.selectNodeHead(selectedNode);
+            scope.selectNode(selectedNode);
             expect(selectedNode.state).toBe('expanded'); // changed
         });
 

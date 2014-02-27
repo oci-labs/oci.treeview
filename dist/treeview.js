@@ -5,11 +5,35 @@
 
     module.controller('oci.treeview.ctrl', function ($scope) {
         $scope.context = $scope.context || {};
-        $scope.selectNodeHead = function (selectedNode) {
-            if (selectedNode.state === 'expanded') {
-                selectedNode.state = 'collapsed';
-            } else if (selectedNode.state === 'collapsed') {
-                selectedNode.state = 'expanded';
+
+        /**
+         * Called when user clicks on a node icon.  For non-leaf nodes
+         * toggles the node.state between 'expanded' and 'collapsed'.
+         *
+         * If an on-select-node function was passed to the treeview directive,
+         * it is called with the node being selected before node.state
+         * is changed.  If the on-select-node function returns a promise,
+         * node.state is changed after the promise resolves successfully.
+         * If the promise resolves to an error the state is not changed.
+         *
+         * @param node the tree node being selected
+         */
+        $scope.selectNode = function (node) {
+            function setState() {
+                if (node.state === 'expanded') {
+                    node.state = 'collapsed';
+                } else if (node.state === 'collapsed') {
+                    node.state = 'expanded';
+                }
+            }
+
+            var promise = $scope.onSelectNode && $scope.onSelectNode(node);
+            if (promise && promise.success) {
+                promise.success(function () {
+                    setState();
+                });
+            } else {
+                setState();
             }
         };
     });
@@ -23,7 +47,8 @@
             transclude: true,
             scope: {
                 tree: '=',
-                context: '=?'
+                context: '=?',
+                onSelectNode: '=?'
             },
             controller: 'oci.treeview.ctrl',
             template:
@@ -33,8 +58,8 @@
                 '   <span ng-transclude></span>' +
                 '   <ul ng-if="tree.state === ' + "'expanded'" + '">' +
                 '       <li ng-repeat="node in tree.children">' +
-                '           <i ng-class="node.state" ng-click="selectNodeHead(node)"></i>' +
-                '           <treeview tree="node" contect="context">' +
+                '           <i ng-class="node.state" ng-click="selectNode(node)"></i>' +
+                '           <treeview tree="node" context="context" on-select-node="onSelectNode">' +
                 // Here is another ng-transclude directive which will be given the same transclude HTML as
                 // above instance.
                 // Notice that this is wrapped in another directive, 'treeview', which is same type of
