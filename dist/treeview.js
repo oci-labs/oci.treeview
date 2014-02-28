@@ -10,6 +10,19 @@
     var module = angular.module('oci.treeview', []);
 
     module.controller('oci.treeview.ctrl', function ($scope) {
+        function setNodeState(node) {
+            if (node && node.state === undefined) {
+                if (node.children && node.children.length > 0) {
+                    node.state = 'expanded';
+                    node.children.forEach(setNodeState);
+                } else {
+                    node.state = 'leaf';
+                }
+            }
+        }
+
+        setNodeState($scope.tree);
+
         $scope.context = $scope.context || {};
 
         /**

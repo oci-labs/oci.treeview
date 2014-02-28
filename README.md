@@ -56,7 +56,17 @@ The directive expects a tree with a single root node object with the following p
 
 - label Label to display to the right of the icon
 - children array of child node objects
-- state (optional) the current state of the node, either 'collapsed', 'expanded' or leaf.  Defaults to 'collapsed', or 'leaf' if the node has no children.
+- state (optional) the current state of the node, either 'collapsed',
+'expanded' or leaf.
+
+If not specified, the `state` defaults to 'expanded', or 'leaf' if the node has no
+children.  Note that you can confuse the directive by setting `state`
+on some nodes but not others.  So either set the state yourself on all
+nodes, or set it on none and leave it to the directive.
+
+Also note that if you are doing on-demand loading you should set the
+state explicitly on nodes that are dynamically added.  (We may relax
+this requirement in the future.)
 
 ## Custom Markup
 
@@ -121,7 +131,9 @@ The `selectNode` function is in the transcluded markup scope and can be used to 
 ## Fiddles
 
 [Basic Demo](http://jsfiddle.net/LMFinney/zstU3)
+
 [Custom Callback Function](http://jsfiddle.net/LMFinney/Fvm43)
+
 [Node Selected Event](http://jsfiddle.net/LMFinney/3q44P)
 
 ## Credits
