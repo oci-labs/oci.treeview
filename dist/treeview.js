@@ -27,6 +27,8 @@
                 }
             }
 
+            $scope.$emit('nodeSelected', node, $scope.context);
+
             var promise = $scope.onSelectNode && $scope.onSelectNode(node);
             if (promise && promise.then) {
                 promise.then(setState);
