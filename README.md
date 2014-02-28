@@ -11,7 +11,7 @@ Include the oci.treeview css and js files:
 <script src="treeview.js"></script>
 ```
 
-Load the oci.treeview module as a dependency of your module:
+Copy everything in the `dist` folder into your project and load the oci.treeview module as a dependency of your module:
 
 ```javascript
 angular.module('myApp', ['oci.treeview']);
@@ -58,11 +58,11 @@ The directive expects a tree with a single root node object with the following p
 - children array of child node objects
 - state (optional) the current state of the node, either 'collapsed', 'expanded' or leaf.  Defaults to 'collapsed', or 'leaf' if the node has no children.
 
-## Custom markup
+## Custom Markup
 
 Custom markup withing the oci.treeview element markup is transcluded for each node of the tree.  Inside the transcluded markup the scope variable 'tree' is the current node:
 
-## Custom On Select Node Callback Function (for on demand loading, etc.)
+## Custom Callback Function (for on demand loading, etc.)
 
 The on-select-node optional attribute can be used to pass a function in the current scope that will be called when a node is selected. It is called with the node being selected before node.state is changed. If the on-select-node function returns a promise, node.state is changed _after_ the promise resolves successfully.  This can be used to load data on demand when a collapsed node is selected, add the new data to tree, and wait to expand and display the sub-nodes until the data is loaded. If the promise resolves to an error the state is not changed.
 
@@ -107,9 +107,9 @@ We can then use the following CSS to color the selected node red:
 }
 ```
 
-## Select node function
+## Select Node Function
 
-The select node function is in the transcluded markup scope and can be used to select (expand or collapse) the current node when something on the custom markup is selected (not just the icons):
+The `selectNode` function is in the transcluded markup scope and can be used to select (expand or collapse) the current node when something on the custom markup is selected (not just the icons):
 
 ```html
 <oci.treeview tree="treeData" on-select-node="getMoreData">
@@ -117,3 +117,13 @@ The select node function is in the transcluded markup scope and can be used to s
     <span ng-click="selectNode(tree)">{{tree.label}}</span>
 </oci.treeview>
 ```
+
+## Demos
+
+[Basic Demo](http://jsfiddle.net/LMFinney/Fvm43)
+
+## Credits
+
+The technique for included transcluded markup in each tree ndoe was adapted from http://jsfiddle.net/DsvX6/7/, which is explained in http://stackoverflow.com/questions/19125551/angularjs-understanding-a-recursive-directive
+
+The icons and CSS were adapted from [angular.treeview](http://ngmodules.org/modules/angular.treeview).
