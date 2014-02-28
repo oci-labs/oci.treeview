@@ -25,8 +25,38 @@
             timeout = $timeout;
             rootScope = $rootScope;
             q = $q;
-            $controller = controller;
+            controller = $controller;
         }));
+
+
+        it('should set node.state if not supplied, defaulting to collapsed', function () {
+            var treeData = {
+                label: 'Parent',
+                children: [
+                    {
+                        label: 'Child1',
+                        children: [
+                            {
+                                label: 'Grandchild1',
+                                children: []
+                            }
+                        ]
+                    },
+                    {
+                        label: 'Child2',
+                        children: []
+                    }
+                ]
+            };
+            var scope = { tree: treeData };
+
+            controller('oci.treeview.ctrl', {$scope: scope});
+
+            expect(treeData.state).toBe('expanded');
+            expect(treeData.children[0].state).toBe('expanded');
+            expect(treeData.children[0].children[0].state).toBe('leaf');
+            expect(treeData.children[1].state).toBe('leaf');
+        });
 
         it('should render nested tree expanded', function () {
             var treeData = {
@@ -159,15 +189,17 @@
             expect(grandchildLabels.length).toBe(0);
         });
 
-        it('should have skipped doing anything w/o children', function(){
+        it('should have skipped doing anything w/o children', function () {
             // check childless (should be skipped)
             var selectedNode = {state: 'leaf', children: []};
             scope.selectNode(selectedNode);
             expect(selectedNode.state).toBe('leaf'); // unchanged
         });
 
-        it('should have collapsed', function(){
-            var selectedNode = {state: 'expanded', children: [{}]};
+        it('should have collapsed', function () {
+            var selectedNode = {state: 'expanded', children: [
+                {}
+            ]};
             scope.selectNode(selectedNode);
             expect(selectedNode.state).toBe('collapsed'); // changed
             scope.selectNode(selectedNode);
@@ -180,7 +212,9 @@
                 onSelectNodeState = node.state;
             };
 
-            var selectedNode = {state: 'expanded', children: [{}]};
+            var selectedNode = {state: 'expanded', children: [
+                {}
+            ]};
 
             scope.selectNode(selectedNode);
             expect(onSelectNodeState).toBe('expanded'); // not changed yet
@@ -206,7 +240,9 @@
                 return promise;
             };
 
-            var selectedNode = {state: 'expanded', children: [{}]};
+            var selectedNode = {state: 'expanded', children: [
+                {}
+            ]};
 
             scope.selectNode(selectedNode);
             expect(promiseCalled).toBe(false);
@@ -240,7 +276,9 @@
                 return promise;
             };
 
-            var selectedNode = {state: 'expanded', children: [{}]};
+            var selectedNode = {state: 'expanded', children: [
+                {}
+            ]};
 
             scope.selectNode(selectedNode);
             expect(promiseCalled).toBe(false);
@@ -255,17 +293,15 @@
             expect(selectedNode.state).toBe('expanded'); // still not changed
         });
 
-        it('should emit selected node event', function() {
+        it('should emit selected node event', function () {
             spyOn(scope, '$emit');
 
-            var selectedNode = {state: 'expanded', children: [{}]};
+            var selectedNode = {state: 'expanded', children: [
+                {}
+            ]};
             scope.selectNode(selectedNode);
 
             expect(scope.$emit).toHaveBeenCalledWith('nodeSelected', selectedNode, {});
-        });
-
-        it('should set node.state if not supplied, defaulting to collapsed', function () {
-
         });
     });
 })();
