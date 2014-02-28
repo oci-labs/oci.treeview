@@ -170,7 +170,7 @@
             var onSelectNodeState;
             scope.onSelectNode = function (node) {
                 onSelectNodeState = node.state;
-            }
+            };
 
             var selectedNode = {state: 'expanded', children: [{}]};
 
@@ -196,7 +196,7 @@
                 });
                 deferred.resolve();
                 return promise;
-            }
+            };
 
             var selectedNode = {state: 'expanded', children: [{}]};
 
@@ -212,7 +212,7 @@
             expect(selectedNode.state).toBe('collapsed'); // changed
         });
 
-        iit('should not change state if on-select-node promise resolves to error', function () {
+        it('should not change state if on-select-node promise resolves to error', function () {
             var onSelectNodeState;
             var promiseCalled = false;
             var promiseError;
@@ -230,7 +230,7 @@
                 });
                 deferred.reject('error');
                 return promise;
-            }
+            };
 
             var selectedNode = {state: 'expanded', children: [{}]};
 
@@ -246,5 +246,15 @@
             expect(onSelectNodeState).toBeUndefined(); // still not changed
             expect(selectedNode.state).toBe('expanded'); // still not changed
         });
+
+        it('should emit selected node event', function() {
+            spyOn(scope, '$emit');
+
+            var selectedNode = {state: 'expanded', children: [{}]};
+            scope.selectNode(selectedNode);
+
+            expect(scope.$emit).toHaveBeenCalledWith('nodeSelected', selectedNode, {});
+        });
+
     });
 })();

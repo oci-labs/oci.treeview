@@ -5,13 +5,14 @@
     <title>OCI Treeview Demo</title>
 
     <link rel="stylesheet" href="../../dist/treeview.css">
+    <link rel="stylesheet" href="demo.css">
 </head>
 <body>
 <div data-ng-app="app">
     <div data-ng-controller="AppCtrl">
         <treeview tree="treeData">
             <!--HTML to be transcluded-->
-            <span class="{{tree.class}}">{{ tree.label }} -  {{tree.class}}</span>
+            <span ng-class="tree.class">{{ tree.label }}</span>
         </treeview>
     </div>
 </div>

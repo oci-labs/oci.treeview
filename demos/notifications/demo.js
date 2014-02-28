@@ -39,7 +39,11 @@ angular.module('app', ['oci.treeview']).controller('AppCtrl', function ($scope) 
     };
 
     $scope.$on('nodeSelected', function (event, node, context) {
-      node.class = 'selected';
-      console.log('node', node);
+        if (context.selectedNode) {
+            context.selectedNode.class = '';
+        }
+
+        node.class = 'selectedNode';
+        context.selectedNode = node;
     });
-})
+});
