@@ -1,3 +1,9 @@
+/*
+ @license OCI Treeview version 0.1.0
+ ⓒ 2014 OCI https://github.com/objectcomputing/oci.treeview
+ License: MIT
+ */
+
 angular.module('app', ['oci.treeview']).controller('AppCtrl', function ($scope) {
     $scope.treeData = {
         label: 'Parent',
@@ -38,6 +44,9 @@ angular.module('app', ['oci.treeview']).controller('AppCtrl', function ($scope) 
         ]
     };
 
+    // When a node's icon is clicked on, the 'nodeSelected' event is fired.
+    // This listener sets the class to 'selectedNode' for css to handle
+    // and clears the previous selection.
     $scope.$on('nodeSelected', function (event, node, context) {
         if (context.selectedNode) {
             context.selectedNode.class = '';

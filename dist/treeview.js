@@ -1,3 +1,9 @@
+/*
+ @license OCI Treeview version 0.1.0
+ ⓒ 2014 OCI https://github.com/objectcomputing/oci.treeview
+ License: MIT
+ */
+
 (function () {
     'use strict';
 
@@ -20,6 +26,7 @@
          */
         $scope.selectNode = function (node) {
             function setState() {
+                // swap between expanded and collapsed.
                 if (node.state === 'expanded') {
                     node.state = 'collapsed';
                 } else if (node.state === 'collapsed') {
@@ -27,12 +34,16 @@
                 }
             }
 
+            // Provides a hook for listening to the selection
             $scope.$emit('nodeSelected', node, $scope.context);
 
             var promise = $scope.onSelectNode && $scope.onSelectNode(node);
             if (promise && promise.then) {
+                // If a promise-based function is used, change the collapse state
+                // when the promise is complete...
                 promise.then(setState);
             } else {
+                // ...otherwise change the collapse state immediately
                 setState();
             }
         };
