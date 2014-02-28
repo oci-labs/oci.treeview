@@ -120,7 +120,7 @@ The `selectNode` function is in the transcluded markup scope and can be used to 
 
 ## Demos
 
-[Basic Demo](http://jsfiddle.net/LMFinney/Fvm43)
+[Basic Demo](http://jsfiddle.net/LMFinney/zstU3/)
 
 ## Credits
 
