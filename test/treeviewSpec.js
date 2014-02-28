@@ -44,7 +44,7 @@
                 ]
             };
 
-            var elem = angular.element('<treeview tree="treeData"> <!--HTML to be transcluded--> <p>{{ tree.label }}</p> </treeview>');
+            var elem = angular.element('<oci.treeview tree="treeData"> <!--HTML to be transcluded--> <p>{{ tree.label }}</p> </oci.treeview>');
             scope.treeData = treeData;
             compile(elem)(scope);
             scope.$digest();
@@ -91,7 +91,7 @@
                 ]
             };
 
-            var elem = angular.element('<treeview tree="treeData"> <!--HTML to be transcluded--> <p>{{ tree.label }}</p> </treeview>');
+            var elem = angular.element('<oci.treeview tree="treeData"> <!--HTML to be transcluded--> <p>{{ tree.label }}</p> </oci.treeview>');
             scope.treeData = treeData;
             compile(elem)(scope);
             scope.$digest();
@@ -135,7 +135,7 @@
                 ]
             };
 
-            var elem = angular.element('<treeview tree="treeData"> <!--HTML to be transcluded--> <p>{{ tree.label }}</p> </treeview>');
+            var elem = angular.element('<oci.treeview tree="treeData"> <!--HTML to be transcluded--> <p>{{ tree.label }}</p> </oci.treeview>');
             scope.treeData = treeData;
             compile(elem)(scope);
             scope.$digest();

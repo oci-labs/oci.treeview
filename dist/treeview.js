@@ -38,7 +38,7 @@
         };
     });
 
-    module.directive("treeview", function ($compile) {
+    module.directive("oci.treeview", function ($compile) {
         // Adapted from http://jsfiddle.net/DsvX6/7/, which is explained in
         // http://stackoverflow.com/questions/19125551/angularjs-understanding-a-recursive-directive
 
@@ -59,7 +59,7 @@
                 '   <ul ng-if="tree.state === ' + "'expanded'" + '">' +
                 '       <li ng-repeat="node in tree.children">' +
                 '           <i ng-class="node.state" ng-click="selectNode(node)"></i>' +
-                '           <treeview tree="node" context="context" on-select-node="onSelectNode">' +
+                '           <oci.treeview tree="node" context="context" on-select-node="onSelectNode">' +
                 // Here is another ng-transclude directive which will be given the same transclude HTML as
                 // above instance.
                 // Notice that this is wrapped in another directive, 'treeview', which is same type of
@@ -68,7 +68,7 @@
                 // call to the tree directive.  The recursion will end when the ng-repeat above has
                 // no children to walkthrough.  In other words, when we hit a leaf.
                 '               <span ng-transclude></span>' +
-                '           </treeview>' +
+                '           </oci.treeview>' +
                 '       </li>' +
                 '   </ul>' +
                 '</div>',

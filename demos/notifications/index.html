@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OCI Treeview Demo</title>
+    <title>OCI Treeview Demo - Selection Colors Node through Notification</title>
 
     <link rel="stylesheet" href="../../dist/treeview.css">
     <link rel="stylesheet" href="demo.css">
@@ -10,10 +10,10 @@
 <body>
 <div data-ng-app="app">
     <div data-ng-controller="AppCtrl">
-        <treeview tree="treeData">
+        <oci.treeview tree="treeData">
             <!--HTML to be transcluded-->
             <span ng-class="tree.class">{{ tree.label }}</span>
-        </treeview>
+        </oci.treeview>
     </div>
 </div>
 <script src="../../lib/angular/angular.js"></script>
