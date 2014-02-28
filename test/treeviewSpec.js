@@ -15,6 +15,7 @@
         var timeout;
         var rootScope;
         var q;
+        var controller;
 
         beforeEach(inject(function ($compile, $rootScope, $controller, $timeout, $q) {
             compile = $compile;
@@ -24,6 +25,7 @@
             timeout = $timeout;
             rootScope = $rootScope;
             q = $q;
+            $controller = controller;
         }));
 
         it('should render nested tree expanded', function () {
@@ -262,5 +264,8 @@
             expect(scope.$emit).toHaveBeenCalledWith('nodeSelected', selectedNode, {});
         });
 
+        it('should set node.state if not supplied, defaulting to collapsed', function () {
+
+        });
     });
 })();
