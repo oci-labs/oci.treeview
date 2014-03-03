@@ -1,5 +1,5 @@
 /*
- @license OCI Treeview version 0.1.0
+ @license OCI Treeview version 0.1.1
  ⓒ 2014 OCI https://github.com/objectcomputing/oci.treeview
  License: MIT
  */
@@ -11,9 +11,13 @@
 
     module.controller('oci.treeview.ctrl', function ($scope) {
         function setNodeState(node) {
+            if ($scope.defaultNodeState !== 'collapsed') {
+                $scope.defaultNodeState = 'expanded';
+            }
+
             if (node && node.state === undefined) {
                 if (node.children && node.children.length > 0) {
-                    node.state = 'expanded';
+                    node.state = $scope.defaultNodeState;
                     node.children.forEach(setNodeState);
                 } else {
                     node.state = 'leaf';
@@ -77,6 +81,7 @@
                 tree: '=',
                 context: '=?',
                 onSelectNode: '=?',
+                defaultNodeState: '@',
                 selectTranscluded: '@'
             },
             controller: 'oci.treeview.ctrl',
@@ -89,7 +94,7 @@
                 '       <li ng-repeat="node in tree.children">' +
                 '           <i ng-class="node.state" ng-click="selectNode(node)"></i>' +
                 '           <oci.treeview tree="node" context="context" on-select-node="onSelectNode" ' +
-                '               select-transcluded="{{selectTranscluded}}">' +
+                '               select-transcluded="{{selectTranscluded}}" default-node-state="{{defaultNodeState}}">' +
                 // Here is another ng-transclude directive which will be given the same transclude HTML as
                 // above instance.
                 // Notice that this is wrapped in another directive, 'treeview', which is same type of

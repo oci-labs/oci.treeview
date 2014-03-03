@@ -1,5 +1,5 @@
 /*
- @license OCI Treeview version 0.1.0
+ @license OCI Treeview version 0.1.1
  ⓒ 2014 OCI https://github.com/objectcomputing/oci.treeview
  License: MIT
  */
@@ -55,6 +55,94 @@
             expect(treeData.children[0].state).toBe('expanded');
             expect(treeData.children[0].children[0].state).toBe('leaf');
             expect(treeData.children[1].state).toBe('leaf');
+        });
+
+        it('should set node.state to expanded if the supplied value is wrong', function () {
+            var treeData = {
+                label: 'Parent',
+                children: [
+                    {
+                        label: 'Child1',
+                        children: [
+                            {
+                                label: 'Grandchild1',
+                                children: []
+                            }
+                        ]
+                    },
+                    {
+                        label: 'Child2',
+                        children: []
+                    }
+                ]
+            };
+            var scope = { tree: treeData, defaultNodeState: 'foo' };
+
+            controller('oci.treeview.ctrl', {$scope: scope});
+
+            expect(treeData.state).toBe('expanded');
+            expect(treeData.children[0].state).toBe('expanded');
+            expect(treeData.children[0].children[0].state).toBe('leaf');
+            expect(treeData.children[1].state).toBe('leaf');
+        });
+
+        it('should set node.state if supplied as collapsed', function () {
+            var treeData = {
+                label: 'Parent',
+                children: [
+                    {
+                        label: 'Child1',
+                        children: [
+                            {
+                                label: 'Grandchild1',
+                                children: []
+                            }
+                        ]
+                    },
+                    {
+                        label: 'Child2',
+                        children: []
+                    }
+                ]
+            };
+            var scope = { tree: treeData, defaultNodeState: 'collapsed' };
+
+            controller('oci.treeview.ctrl', {$scope: scope});
+
+            expect(treeData.state).toBe('collapsed');
+            expect(treeData.children[0].state).toBe('collapsed');
+            expect(treeData.children[0].children[0].state).toBe('leaf');
+            expect(treeData.children[1].state).toBe('leaf');
+        });
+
+        it('should not set any node.state if the root state is set', function () {
+            var treeData = {
+                label: 'Parent',
+                state: 'expanded',
+                children: [
+                    {
+                        label: 'Child1',
+                        children: [
+                            {
+                                label: 'Grandchild1',
+                                children: []
+                            }
+                        ]
+                    },
+                    {
+                        label: 'Child2',
+                        children: []
+                    }
+                ]
+            };
+            var scope = { tree: treeData, defaultNodeState: 'collapsed' };
+
+            controller('oci.treeview.ctrl', {$scope: scope});
+
+            expect(treeData.state).toBe('expanded');
+            expect(treeData.children[0].state).toBeUndefined();
+            expect(treeData.children[0].children[0].state).toBeUndefined();
+            expect(treeData.children[1].state).toBeUndefined();
         });
 
         it('should render nested tree expanded', function () {

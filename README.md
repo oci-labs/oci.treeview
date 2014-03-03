@@ -64,6 +64,19 @@ children.  Note that you can confuse the directive by setting `state`
 on some nodes but not others.  So either set the state yourself on all
 nodes, or set it on none and leave it to the directive.
 
+Additionally, you may set the default for a non-leaf to 'collapsed' instead
+of 'expanded' by setting the `defaultNodeState` scope variable (any value
+other than 'expanded' or 'collapsed' is ignored):
+
+```html
+<div data-ng-controller="AppCtrl">
+    <oci.treeview tree="treeData" defaultNodeState="collapsed">
+        <!--HTML to be transcluded-->
+        <span class="myNodeClass">{{ tree.label }}</span>
+    </oci.treeview>
+</div>
+```
+
 Also note that if you are doing on-demand loading you should set the
 state explicitly on nodes that are dynamically added.  (We may relax
 this requirement in the future.)

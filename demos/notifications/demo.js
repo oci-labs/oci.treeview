@@ -1,5 +1,5 @@
 /*
- @license OCI Treeview version 0.1.0
+ @license OCI Treeview version 0.1.1
  ⓒ 2014 OCI https://github.com/objectcomputing/oci.treeview
  License: MIT
  */
