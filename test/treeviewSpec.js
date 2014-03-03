@@ -28,8 +28,7 @@
             controller = $controller;
         }));
 
-
-        it('should set node.state if not supplied, defaulting to collapsed', function () {
+        it('should set node.state if not supplied, defaulting to expanded', function () {
             var treeData = {
                 label: 'Parent',
                 children: [
