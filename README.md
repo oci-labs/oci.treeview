@@ -117,16 +117,18 @@ We can then use the following CSS to color the selected node red:
 }
 ```
 
-## Select Node Function
+## Selecting Transcluded Markup
 
-The `selectNode` function is in the transcluded markup scope and can be used to select (expand or collapse) the current node when something on the custom markup is selected (not just the icons):
+By default nodes are expanded or collapsed when the icon or transcluded node markup is selected.  To turn off node
+expanding / collapsing on transcluded markup set `select-transcluded` to false:
 
-```html
-<oci.treeview tree="treeData" on-select-node="getMoreData">
-    <!--HTML to be transcluded-->
-    <span ng-click="selectNode(tree)">{{tree.label}}</span>
+ ```html
+<oci.treeview tree="treeData" select-transcluded="false">
+    <span>{{tree.label}}</span>
 </oci.treeview>
-```
+ ```
+
+Clicking on the icon will still expand or collapse, but clicking on the transcluded label will do nothing.
 
 ## Fiddles
 

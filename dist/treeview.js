@@ -60,6 +60,10 @@
                 setState();
             }
         };
+
+        if ($scope.selectTranscluded !== 'false') {
+            $scope.clickOnTranscluded = true;
+        }
     });
 
     module.directive("oci.treeview", function ($compile) {
@@ -72,18 +76,20 @@
             scope: {
                 tree: '=',
                 context: '=?',
-                onSelectNode: '=?'
+                onSelectNode: '=?',
+                selectTranscluded: '@'
             },
             controller: 'oci.treeview.ctrl',
             template:
                 '<div class="tree">' +
                 // Here we have one of the ng-transclude directives that will be given the HTML in the
                 // element the directive is applied to.
-                '   <span ng-transclude></span>' +
+                '   <span ng-click="clickOnTranscluded && selectNode(tree)" ng-transclude></span>' +
                 '   <ul ng-if="tree.state === ' + "'expanded'" + '">' +
                 '       <li ng-repeat="node in tree.children">' +
                 '           <i ng-class="node.state" ng-click="selectNode(node)"></i>' +
-                '           <oci.treeview tree="node" context="context" on-select-node="onSelectNode">' +
+                '           <oci.treeview tree="node" context="context" on-select-node="onSelectNode" ' +
+                '               select-transcluded="{{selectTranscluded}}">' +
                 // Here is another ng-transclude directive which will be given the same transclude HTML as
                 // above instance.
                 // Notice that this is wrapped in another directive, 'treeview', which is same type of
@@ -102,7 +108,6 @@
                 var contents = tElement.contents().remove();
                 var compiledContents;
                 return function (scope, iElement) {
-
                     if (!compiledContents) {
                         // Get the link function with the contents from top level template with
                         // the transclude
