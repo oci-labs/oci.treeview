@@ -9,7 +9,7 @@
 
     var module = angular.module('oci.treeview', []);
 
-    module.controller('oci.treeview.ctrl', function ($scope) {
+    module.controller('oci.treeview.ctrl', ['$scope', function ($scope) {
         function setNodeState(node) {
             if ($scope.defaultNodeState !== 'collapsed') {
                 $scope.defaultNodeState = 'expanded';
@@ -68,9 +68,9 @@
         if ($scope.selectTranscluded !== 'false') {
             $scope.clickOnTranscluded = true;
         }
-    });
+    }]);
 
-    module.directive("oci.treeview", function ($compile) {
+    module.directive("oci.treeview", ['$compile', function ($compile) {
         // Adapted from http://jsfiddle.net/DsvX6/7/, which is explained in
         // http://stackoverflow.com/questions/19125551/angularjs-understanding-a-recursive-directive
 
@@ -131,5 +131,5 @@
                 };
             }
         };
-    });
+    }]);
 })();
