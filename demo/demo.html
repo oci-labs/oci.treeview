@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OCI Treeview Demo</title>
+
+    <link rel="stylesheet" href="../dist/treeview.css">
+    <link rel="stylesheet" href="demo.css">
+</head>
+<body>
+<div data-ng-app="app">
+    <div data-ng-controller="AppCtrl">
+        <h2>Basic - automatically expanded</h2>
+        <oci.treeview tree="treeDataBasic">
+            <!--HTML to be transcluded-->
+            {{ tree.label }}
+        </oci.treeview>
+
+        <h2>Basic - preset to collapsed (click on "Parent" to expand)</h2>
+        <oci.treeview tree="treeDataToBeCollapsed" default-node-state="collapsed">
+            <!--HTML to be transcluded-->
+            {{ tree.label }}
+        </oci.treeview>
+
+        <h2>Using Notifications to change the appearance</h2>
+        <oci.treeview tree="treeDataNotifications">
+            <!--HTML to be transcluded-->
+            <span ng-class="tree.class">{{ tree.label }}</span>
+        </oci.treeview>
+
+        <h2>Using the callback to change the contents of the tree</h2>
+        <oci.treeview tree="treeDataOnSelect" on-select-node="getMoreData">
+            <!--HTML to be transcluded-->
+            <span ng-click="selectNode(tree)">{{tree.label}}</span>
+        </oci.treeview>
+    </div>
+</div>
+<script src="../lib/angular/angular.js"></script>
+<script src="../dist/treeview.js"></script>
+<script src="demo.js"></script>
+</body>
+</html>

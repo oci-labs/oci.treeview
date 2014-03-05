@@ -1,0 +1,10 @@
+---
+ name: OCI Treeview Demo
+ description: Demonstration of the basic and non-basic features of oci.treeview.
+ authors:
+   - Lance Finney
+   - Steve Molitor
+ resources:
+   - http://ajax.googleapis.com/ajax/libs/angularjs/1.2.4/angular.js
+ normalize_css: no
+ ...
