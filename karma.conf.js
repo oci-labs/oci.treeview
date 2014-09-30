@@ -15,7 +15,7 @@ module.exports = function (config) {
         files: [
             'lib/jquery-1.11.0.min.js',
             'lib/angular/angular.js',
-            'lib/angular/angular-*.js',
+            'lib/angular/angular-mocks.js',
             'dist/treeview.js',
             'test/treeviewSpec.js'
         ],

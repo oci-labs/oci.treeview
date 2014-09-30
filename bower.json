@@ -24,5 +24,9 @@
   ],
   "dependencies": {
     "angular": "~1.2.4"
+  },
+  "devDependencies": {
+    "jquery": "~1.11.0",
+    "angular-mocks": "~1.2.4"
   }
 }
