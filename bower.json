@@ -1,0 +1,28 @@
+{
+  "name": "oci.treeview",
+  "version": "1.0.0",
+  "homepage": "https://github.com/objectcomputing/oci.treeview",
+  "authors": [
+    "Object Computing, Inc."
+  ],
+  "description": "AngularJS tree directive with subdirective for extending node behavior",
+  "main": "dist/treeview.js",
+  "keywords": [
+    "Angular",
+    "AngularJS",
+    "treeview",
+    "tree",
+    "view"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "lib"
+  ],
+  "dependencies": {
+    "angular": "~1.2.4"
+  }
+}
